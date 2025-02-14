@@ -2,6 +2,7 @@ package mantis.tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import mantis.pages.MantisSite;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,9 +22,10 @@ public class BaseTest {
         driver.manage().window().maximize();
     }
 
-
     @AfterEach
     public void tearDown() {
-        driver.quit();
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
