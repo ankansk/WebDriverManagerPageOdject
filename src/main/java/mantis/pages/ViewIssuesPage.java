@@ -17,9 +17,6 @@ public class ViewIssuesPage {
 
     private final WebDriverWait wait;
 
-    @FindBy(css = "a[href='/mantisbt/bug_report_page.php']")
-    private WebElement reportIssuePage;
-
     @FindBy(css = "#buglist tbody tr")
     private List<WebElement> issues;
 
@@ -86,5 +83,13 @@ public class ViewIssuesPage {
 
     public void deleteIssueButtonClick() {
         deleteIssueButton.click();
+    }
+
+    public void deleteFirstIssue() {
+        checkFirstIssue();
+        scrollToTableFooter();
+        viewActionList();
+        checkDelete();
+        buttonOkClick();
     }
 }

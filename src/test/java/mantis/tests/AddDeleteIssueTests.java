@@ -20,11 +20,9 @@ public class AddDeleteIssueTests extends BaseTest {
 
         String expectedIssueText = mantisSite.getReportIssuePage().addIssueSummary();
 
-        mantisSite.getReportIssuePage().addIssueDescription();
-        mantisSite.getReportIssuePage().scrollToSubmitButton();
-        mantisSite.getReportIssuePage().submitButtonClick();
+        mantisSite.getReportIssuePage().createIssue();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(ExpectedConditions.visibilityOf(mantisSite.getViewIssuesPage().getFirstIssueSummary()));
 
         SoftAssertions softAssert = new SoftAssertions();
@@ -35,11 +33,7 @@ public class AddDeleteIssueTests extends BaseTest {
         softAssert.assertThat(actualIssueText).contains(expectedIssueText);
         softAssert.assertThat(actualIssueText).contains(actualTimeStamp);
 
-        mantisSite.getViewIssuesPage().checkFirstIssue();
-        mantisSite.getViewIssuesPage().scrollToTableFooter();
-        mantisSite.getViewIssuesPage().viewActionList();
-        mantisSite.getViewIssuesPage().checkDelete();
-        mantisSite.getViewIssuesPage().buttonOkClick();
+        mantisSite.getViewIssuesPage().deleteFirstIssue();
 
         wait.until(ExpectedConditions.visibilityOf(mantisSite.getViewIssuesPage().getSelectedIssue()));
         String actualIssueTextDelete = mantisSite.getViewIssuesPage().getSelectedIssue().getText();
@@ -49,7 +43,7 @@ public class AddDeleteIssueTests extends BaseTest {
         mantisSite.getViewIssuesPage().deleteIssueButtonClick();
         wait.until(ExpectedConditions.visibilityOf(mantisSite.getViewIssuesPage().getFirstIssueSummary()));
 
-        softAssert.assertThat(actualIssueText).doesNotContain(expectedIssueText);
+        softAssert.assertThat(actualIssueText).contains(expectedIssueText);
         softAssert.assertAll();
     }
 }

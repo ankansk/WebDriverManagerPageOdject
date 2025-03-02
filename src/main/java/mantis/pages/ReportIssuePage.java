@@ -18,6 +18,9 @@ public class ReportIssuePage {
 
     private final WebDriverWait wait;
 
+    @FindBy(css = "a[href='/mantisbt/bug_report_page.php']")
+    private WebElement reportIssuePage;
+
     @FindBy(css = "#summary")
     private WebElement summary;
 
@@ -56,5 +59,11 @@ public class ReportIssuePage {
 
     public void addIssueDescription() {
         description.sendKeys("New issue added");
+    }
+
+    public void createIssue() {
+        addIssueDescription();
+        scrollToSubmitButton();
+        submitButtonClick();
     }
 }
