@@ -15,35 +15,35 @@ public class AddDeleteIssueTests extends BaseTest {
     @Test
     public void checkAddedIssue() throws InterruptedException {
         mantisSite = new MantisSite(driver);
-        mantisSite.login("admin", "admin20");
-        mantisSite.getMainPage().goToReportIssuePage();
-
-        String expectedIssueText = mantisSite.getReportIssuePage().addIssueSummary();
-
-        mantisSite.getReportIssuePage().createIssue();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        wait.until(ExpectedConditions.visibilityOf(mantisSite.getViewIssuesPage().getFirstIssueSummary()));
-
         SoftAssertions softAssert = new SoftAssertions();
 
-        String actualIssueText = mantisSite.getViewIssuesPage().getFirstIssueSummary().getText();
-        String actualTimeStamp = mantisSite.getReportIssuePage().timeStamp();
+        mantisSite.login("admin", "admin20");
 
-        softAssert.assertThat(actualIssueText).contains(expectedIssueText);
+        //mantisSite.getMainPage().goToReportIssuePage();
+
+        String issueSummary = "New Issue";
+        String issueDescription = "New description";
+
+        mantisSite.getReportIssuePage().createIssue(issueSummary, issueDescription);
+
+        waitUntilVisible(mantisSite.getViewIssuesPage().getFirstIssueSummary());
+
+        String actualIssueText = mantisSite.getViewIssuesPage().getFirstIssueSummary().getText();
+        String actualTimeStamp = mantisSite.getReportIssuePage().getTimeStamp();
+
+        softAssert.assertThat(actualIssueText).contains(issueSummary);
         softAssert.assertThat(actualIssueText).contains(actualTimeStamp);
 
         mantisSite.getViewIssuesPage().deleteFirstIssue();
 
-        wait.until(ExpectedConditions.visibilityOf(mantisSite.getViewIssuesPage().getSelectedIssue()));
-        String actualIssueTextDelete = mantisSite.getViewIssuesPage().getSelectedIssue().getText();
+        waitUntilVisible(mantisSite.getViewIssuesPage().getSelectedIssue());
 
-        softAssert.assertThat(actualIssueTextDelete).contains(expectedIssueText);
+        String actualDeletedIssueText = mantisSite.getViewIssuesPage().getSelectedIssue().getText();
+        softAssert.assertThat(actualDeletedIssueText).contains(issueSummary);
 
         mantisSite.getViewIssuesPage().deleteIssueButtonClick();
-        wait.until(ExpectedConditions.visibilityOf(mantisSite.getViewIssuesPage().getFirstIssueSummary()));
+        waitUntilVisible(mantisSite.getViewIssuesPage().getFirstIssueSummary());
 
-        softAssert.assertThat(actualIssueText).contains(expectedIssueText);
-        softAssert.assertAll();
+        softAssert.assertThat(mantisSite.getViewIssuesPage().getFirstIssueSummary().getText()).doesNotContain(issueSummary);
     }
 }

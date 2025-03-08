@@ -36,34 +36,41 @@ public class ReportIssuePage {
         PageFactory.initElements(driver, this);
     }
 
+    public void navigateToReportIssuePage() {
+        reportIssuePage.click();
+        wait.until(ExpectedConditions.visibilityOf(summary));
+    }
+
     public void scrollToSubmitButton() {
         TestUtils.scrollToElement(driver, submitButton);
     }
 
-    public void submitButtonClick() {
+    public void clickSubmitButton() {
         wait.until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
     }
 
-    public String timeStamp() {
+    public String getTimeStamp() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.now().format(dtf);
     }
 
-    public String addIssueSummary() {
-        String timestamp = timeStamp();
-        String issueSummary = "Issue for test - " + timestamp;
-        summary.sendKeys(issueSummary);
-        return issueSummary;
+    public String addIssueSummary(String issueSummary) {
+        String timestamp = getTimeStamp();
+        String issueSummaryWithDate = issueSummary + " " + timestamp;
+        summary.sendKeys(issueSummaryWithDate);
+        return issueSummaryWithDate;
     }
 
-    public void addIssueDescription() {
-        description.sendKeys("New issue added");
+    public void addIssueDescription(String issueDescription) {
+        description.sendKeys(issueDescription);
     }
 
-    public void createIssue() {
-        addIssueDescription();
+    public void createIssue(String issueSummary, String issueDescription) {
+        navigateToReportIssuePage();
+        addIssueSummary(issueSummary);
+        addIssueDescription(issueDescription);
         scrollToSubmitButton();
-        submitButtonClick();
+        clickSubmitButton();
     }
 }

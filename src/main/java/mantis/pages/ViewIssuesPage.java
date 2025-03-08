@@ -68,14 +68,14 @@ public class ViewIssuesPage {
         actionList.click();
     }
 
-    public void checkDelete() {
-        driver.switchTo().activeElement().sendKeys("delete");
-        driver.switchTo().activeElement().sendKeys(Keys.ENTER);
-    }
+//    public void checkDelete() {
+//        driver.switchTo().activeElement().sendKeys("delete");
+//        driver.switchTo().activeElement().sendKeys(Keys.ENTER);
+//    }
 
-    public void buttonOkClick() {
-        OkButton.click();
-    }
+//    public void confirmDeletion() {
+//        OkButton.click();
+//    }
 
     public WebElement getSelectedIssue() {
         return selectedIssue;
@@ -89,7 +89,8 @@ public class ViewIssuesPage {
         checkFirstIssue();
         scrollToTableFooter();
         viewActionList();
-        checkDelete();
-        buttonOkClick();
+        actionList.sendKeys("delete");
+        actionList.sendKeys(Keys.ENTER);
+        OkButton.click();
     }
 }
